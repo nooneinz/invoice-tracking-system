@@ -1,6 +1,7 @@
 """كل المبالغ أعداد صحيحة بالبيسة (1 ر.ع = 1000 بيسة) لحسابات حتمية بلا أخطاء فاصلة عائمة."""
 from datetime import datetime, date, timedelta, timezone
-from sqlalchemy import String, Integer, Float, Boolean, DateTime, Date, ForeignKey, Text, JSON, UniqueConstraint, BigInteger
+from sqlalchemy import String, Integer, Float, Boolean, DateTime, Date, ForeignKey, Text, JSON, UniqueConstraint, BigInteger, Index
+from sqlalchemy import text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .db import Base
 from . import config
@@ -84,7 +85,8 @@ class InvoiceItem(Base):
 
 class Payment(Base):
     __tablename__ = "payments"
-    __table_args__ = (UniqueConstraint("source", "reference", name="uq_payment_ref"),)
+    # المرجع فريد لإشعارات بوابة الدفع فقط (منع التكرار)؛ شيك واحد قد يسدد عدة فواتير يدوياً
+    __table_args__ = (Index("uq_payment_webhook_ref", "reference", unique=True, sqlite_where=text("source = 'webhook'"), postgresql_where=text("source = 'webhook'")),)
     id: Mapped[int] = mapped_column(primary_key=True)
     invoice_id: Mapped[int] = mapped_column(ForeignKey("invoices.id"), index=True)
     amount: Mapped[int] = mapped_column(BigInteger)

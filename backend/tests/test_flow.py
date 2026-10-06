@@ -59,6 +59,11 @@ def test_full_flow():
         assert r["status"] == "paid" and r["balance"] == 0
         assert c.post(f"/api/invoices/{inv['id']}/void", json={"reason": "خطأ"}, headers=fin).status_code == 400  # مسددة
 
+        # شيك واحد بمرجع واحد يسدد فاتورتين يدوياً (يجب ألا يفشل)
+        x1, x2 = mk_invoice(c, fin, b["id"], 100), mk_invoice(c, fin, b["id"], 100)
+        for x in (x1, x2):
+            assert c.post(f"/api/invoices/{x['id']}/payments", json={"amount": 105, "reference": "CHQ-SHARED"}, headers=fin).status_code == 200
+
         # PDF عربي
         pdf = c.get(f"/api/invoices/{inv['id']}/pdf", headers=fin)
         assert pdf.status_code == 200 and pdf.content[:4] == b"%PDF"
