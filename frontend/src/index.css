@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Vazirmatn", system-ui, sans-serif;
+  --font-display: "Alexandria", "Vazirmatn", sans-serif;
+  --color-brand-900: #5a1522;
+  --color-brand-800: #7b1e2e;
+  --color-brand-700: #96303f;
+  --color-brand-50: #f8ecee;
+  --color-silver: #aeb6c2;
+  --color-ink: #181b22;
+  --color-muted: #596171;
+  --color-line: #d6dae0;
+  --color-surface: #eef0f3;
+  --color-ok: #1f6b4a;
+  --color-warn: #8a5a00;
+  --color-bad: #b42318;
+}
+
+html, body, #root { min-height: 100%; }
+body { font-family: var(--font-sans); background: var(--color-surface); color: var(--color-ink); line-height: 1.75; font-variant-numeric: tabular-nums; }
+:focus-visible { outline: 3px solid #96303f; outline-offset: 2px; }
+html { scroll-behavior: smooth; }
+h1, h2, h3 { text-wrap: balance; }
+.font-display { font-family: var(--font-display); }
+
+@layer components {
+  .card { background: #fff; border: 1px solid var(--color-line); border-radius: 12px; padding: 1.25rem; box-shadow: 0 1px 0 rgba(24,27,34,.03); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; min-height: 44px; padding: 0 1.1rem; border-radius: 10px; font-weight: 600; border: 1px solid transparent; cursor: pointer; transition: background .15s, border-color .15s; }
+  .btn-primary { background: var(--color-brand-800); color: #fff; }
+  .btn-primary:hover { background: var(--color-brand-900); }
+  .btn-ghost { background: #fff; color: var(--color-brand-800); border-color: var(--color-line); }
+  .btn-ghost:hover { background: var(--color-brand-50); border-color: var(--color-brand-700); }
+  .btn-ok { background: var(--color-ok); color: #fff; }
+  .btn-bad { background: var(--color-bad); color: #fff; }
+  .btn:disabled { opacity: .55; cursor: not-allowed; }
+  .input { width: 100%; min-height: 44px; padding: .5rem .75rem; border: 1px solid #b4bac4; border-radius: 10px; background: #fff; font: inherit; }
+  label.lbl { display: block; font-size: .88rem; font-weight: 600; margin-bottom: .25rem; }
+  .badge { display: inline-block; padding: .1rem .65rem; border-radius: 6px; font-size: .78rem; font-weight: 600; }
+  .th { text-align: start; font-size: .78rem; color: var(--color-muted); font-weight: 600; padding: .6rem .75rem; border-bottom: 1px solid var(--color-line); background: #f6f7f9; }
+  .td { padding: .7rem .75rem; border-bottom: 1px solid #eceef1; vertical-align: top; }
+  .num { font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate; }
+}
+
+/* خطوط الدفتر المحاسبي */
+.ledger { background-image: repeating-linear-gradient(to bottom, transparent 0 31px, rgba(24,27,34,.07) 31px 32px); }
+.ledger-dark { background-image: repeating-linear-gradient(to bottom, transparent 0 31px, rgba(255,255,255,.07) 31px 32px); }
+.sheet { box-shadow: 0 1px 0 #fff inset, 0 30px 50px -28px rgba(24,27,34,.35), 0 2px 6px rgba(24,27,34,.08); }
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+@keyframes rise { from { opacity: 0; transform: translateY(10px) rotate(-.6deg); } to { opacity: 1; transform: translateY(0) rotate(-.6deg); } }
+.rise { animation: rise .7s ease-out both; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .rise { animation: none; transform: rotate(-.6deg); } }
